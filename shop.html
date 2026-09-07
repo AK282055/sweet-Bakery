@@ -250,9 +250,12 @@
         
         <!-- Sidebar Filters -->
         <aside class="shop-filter-sidebar" id="filter-sidebar">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
             <h3 style="font-size: 1.25rem;">Filters</h3>
-            <button type="button" onclick="resetAllFilters()" style="color: var(--color-pink); font-size: 0.85rem; font-weight: 700;">Reset All</button>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <button type="button" onclick="resetAllFilters()" style="color: var(--color-pink); font-size: 0.85rem; font-weight: 700; background: none; border: none; cursor: pointer;">Reset All</button>
+              <button type="button" onclick="toggleMobileFilterModal(false)" class="mobile-filter-close-btn" aria-label="Close filters" style="background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--color-chocolate); line-height: 1; display: none;">&times;</button>
+            </div>
           </div>
 
           <!-- Category Filter -->
@@ -385,6 +388,12 @@
               <input type="radio" name="filter_rating" value="4.5" onchange="applyFilters()" />
               <span>★ 4.5 & Above</span>
             </label>
+          </div>
+
+          <div class="mobile-filter-apply-wrap" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border); display: none;">
+            <button type="button" class="btn btn-primary btn-block" onclick="toggleMobileFilterModal(false)">
+              Apply Filters
+            </button>
           </div>
         </aside>
 

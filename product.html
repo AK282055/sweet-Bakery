@@ -319,10 +319,10 @@
           </div>
 
           <!-- Complimentary Add-ons -->
-          <div style="display: flex; gap: 20px; margin: 18px 0; font-size: 0.9rem;">
+          <div style="display: flex; flex-wrap: wrap; gap: 14px; margin: 18px 0; font-size: 0.9rem;">
             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
               <input type="checkbox" id="addon-candles" checked style="accent-color: var(--color-chocolate);" />
-              <span>Complimentary Birthday Candles (Set of 6)</span>
+              <span>Complimentary Birthday Candles</span>
             </label>
             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
               <input type="checkbox" id="addon-knife" checked style="accent-color: var(--color-chocolate);" />
@@ -331,18 +331,18 @@
           </div>
 
           <!-- Quantity Stepper & CTA Buttons -->
-          <div style="display: flex; gap: 16px; align-items: center; margin: 28px 0;">
+          <div class="product-cta-row" style="display: flex; gap: 12px; align-items: center; margin: 28px 0; flex-wrap: wrap;">
             <div class="qty-stepper" style="padding: 4px;">
               <button type="button" class="qty-btn" id="qty-minus-btn" aria-label="Decrease quantity">-</button>
               <input type="number" id="qty-input-field" class="qty-input" value="1" min="1" max="10" readonly />
               <button type="button" class="qty-btn" id="qty-plus-btn" aria-label="Increase quantity">+</button>
             </div>
 
-            <button type="button" class="btn btn-primary btn-lg" id="add-to-cart-action-btn" style="flex: 1;">
+            <button type="button" class="btn btn-primary btn-lg" id="add-to-cart-action-btn" style="flex: 1; min-width: 140px;">
               🛒 Add to Cart
             </button>
 
-            <button type="button" class="btn btn-secondary btn-lg" id="buy-now-action-btn" style="flex: 1;">
+            <button type="button" class="btn btn-secondary btn-lg" id="buy-now-action-btn" style="flex: 1; min-width: 140px;">
               ⚡ Buy Now
             </button>
           </div>

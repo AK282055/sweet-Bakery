@@ -120,9 +120,14 @@
         </div>
       </a>
 
-      <div style="display: flex; gap: 14px;">
+      <div class="header-actions" style="display: flex; gap: 10px; align-items: center;">
         <a href="shop.html" class="btn btn-outline btn-sm">Shop More</a>
         <a href="account.html" class="btn btn-primary btn-sm">My Account</a>
+        <button type="button" class="mobile-toggle-btn" id="mobile-menu-btn" aria-label="Open Navigation Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
       </div>
     </div>
   </header>
@@ -208,7 +213,7 @@
           <!-- Dynamically populated -->
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--color-border); padding-top: 20px;">
+        <div class="responsive-two-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--color-border); padding-top: 20px;">
           
           <div>
             <h4 style="font-size: 1rem; margin-bottom: 8px; color: var(--color-chocolate);">Delivery Information</h4>

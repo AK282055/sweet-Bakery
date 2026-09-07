@@ -58,12 +58,89 @@ function initStickyHeader() {
 
 // Mobile Hamburger Navigation Drawer
 function initMobileNav() {
-  const toggleBtn = document.getElementById('mobile-menu-btn');
-  const drawer = document.getElementById('mobile-nav-drawer');
-  const overlay = document.getElementById('mobile-nav-overlay');
-  const closeBtn = document.getElementById('mobile-nav-close');
+  let toggleBtn = document.getElementById('mobile-menu-btn');
+  let drawer = document.getElementById('mobile-nav-drawer');
+  let overlay = document.getElementById('mobile-nav-overlay');
 
-  if (!toggleBtn || !drawer) return;
+  // If page lacks mobile menu toggle button in header, add it
+  const headerActions = document.querySelector('.header-actions');
+  if (!toggleBtn && headerActions) {
+    toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'mobile-toggle-btn';
+    toggleBtn.id = 'mobile-menu-btn';
+    toggleBtn.setAttribute('aria-label', 'Open Navigation Menu');
+    toggleBtn.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    `;
+    headerActions.appendChild(toggleBtn);
+  }
+
+  // If page lacks mobile drawer markup, inject standard bakehouse drawer
+  if (!drawer) {
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'mobile-nav-overlay';
+      overlay.className = 'mobile-nav-overlay';
+      document.body.appendChild(overlay);
+    }
+
+    drawer = document.createElement('aside');
+    drawer.id = 'mobile-nav-drawer';
+    drawer.className = 'mobile-nav-drawer';
+    drawer.setAttribute('aria-label', 'Mobile Navigation');
+
+    const path = window.location.pathname;
+    const isHome = path === '/' || path.endsWith('index.html') || path.endsWith('/');
+    const isShop = path.includes('shop.html');
+    const isAbout = path.includes('about.html');
+    const isContact = path.includes('contact.html');
+    const isCart = path.includes('cart.html');
+    const isWishlist = path.includes('wishlist.html');
+    const isAccount = path.includes('account.html');
+
+    drawer.innerHTML = `
+      <div class="mobile-drawer-header">
+        <div class="brand-logo">
+          <span class="logo-symbol">🧁</span>
+          <span class="logo-title" style="font-size: 1.25rem;">Sweet Crumbs</span>
+        </div>
+        <button type="button" class="mobile-drawer-close" id="mobile-nav-close" aria-label="Close menu">&times;</button>
+      </div>
+      
+      <div class="mobile-drawer-nav">
+        <a href="index.html" class="nav-link ${isHome ? 'active' : ''}">Home</a>
+        <a href="shop.html" class="nav-link ${isShop ? 'active' : ''}">Shop All Cakes</a>
+        <a href="cart.html" class="nav-link ${isCart ? 'active' : ''}">My Basket (<span class="cart-count-badge" style="display:inline;">0</span>)</a>
+        <a href="wishlist.html" class="nav-link ${isWishlist ? 'active' : ''}">My Wishlist</a>
+        <a href="account.html" class="nav-link ${isAccount ? 'active' : ''}">My Account & Orders</a>
+        
+        <div class="mobile-drawer-categories-title">Popular Categories</div>
+        <div class="mobile-categories-list">
+          <a href="shop.html?category=birthday-cakes">🎂 Birthday Cakes</a>
+          <a href="shop.html?category=chocolate-cakes">🍫 Chocolate Truffles</a>
+          <a href="shop.html?category=fruit-cakes">🍓 Fresh Fruit Cakes</a>
+          <a href="shop.html?category=red-velvet">❤️ Red Velvet Cakes</a>
+          <a href="shop.html?category=designer-cakes">🎨 Designer Cakes</a>
+          <a href="shop.html?category=pastries">🥐 Gourmet Pastries</a>
+        </div>
+
+        <a href="about.html" class="nav-link ${isAbout ? 'active' : ''}" style="margin-top: 8px;">About Bakehouse</a>
+        <a href="contact.html" class="nav-link ${isContact ? 'active' : ''}">Contact & Support</a>
+        <a href="faq.html" class="nav-link">FAQs & Tracking</a>
+      </div>
+
+      <div class="mobile-drawer-footer">
+        <a href="shop.html" class="btn btn-primary btn-block">Order Fresh Cakes</a>
+        <div class="mobile-drawer-phone">📞 Bakehouse hotline: +91 98765 43210</div>
+      </div>
+    `;
+    document.body.appendChild(drawer);
+  }
+
+  const closeBtn = document.getElementById('mobile-nav-close');
 
   function openDrawer() {
     drawer.classList.add('open');
@@ -77,14 +154,90 @@ function initMobileNav() {
     document.body.style.overflow = '';
   }
 
-  toggleBtn.addEventListener('click', openDrawer);
+  if (toggleBtn) toggleBtn.addEventListener('click', openDrawer);
   if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
   if (overlay) overlay.addEventListener('click', closeDrawer);
 
-  // Close drawer on link navigation
   drawer.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', closeDrawer);
   });
+}
+
+// Mobile Bottom Navigation Bar (Persistent app-like quick navigation)
+function initMobileBottomNav() {
+  if (document.querySelector('.mobile-bottom-bar')) return;
+
+  const nav = document.createElement('nav');
+  nav.className = 'mobile-bottom-bar';
+  nav.setAttribute('aria-label', 'Mobile Quick Navigation');
+
+  const path = window.location.pathname;
+  const isHome = path === '/' || path.endsWith('index.html') || path.endsWith('/');
+  const isShop = path.includes('shop.html');
+  const isWishlist = path.includes('wishlist.html');
+  const isCart = path.includes('cart.html');
+  const isAccount = path.includes('account.html');
+
+  nav.innerHTML = `
+    <a href="index.html" class="bottom-nav-link ${isHome ? 'active' : ''}">
+      <span class="bottom-nav-icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="shop.html" class="bottom-nav-link ${isShop ? 'active' : ''}">
+      <span class="bottom-nav-icon">🎂</span>
+      <span>Shop</span>
+    </a>
+    <a href="wishlist.html" class="bottom-nav-link ${isWishlist ? 'active' : ''}">
+      <span class="bottom-nav-icon">
+        💖
+        <span class="bottom-nav-badge wishlist-count-badge" style="display:none;">0</span>
+      </span>
+      <span>Wishlist</span>
+    </a>
+    <a href="cart.html" class="bottom-nav-link ${isCart ? 'active' : ''}">
+      <span class="bottom-nav-icon">
+        🛒
+        <span class="bottom-nav-badge cart-count-badge" style="display:none;">0</span>
+      </span>
+      <span>Cart</span>
+    </a>
+    <a href="account.html" class="bottom-nav-link ${isAccount ? 'active' : ''}">
+      <span class="bottom-nav-icon">👤</span>
+      <span>Account</span>
+    </a>
+  `;
+
+  document.body.appendChild(nav);
+
+  // Sync badges with current counts
+  if (typeof updateCartBadge === 'function') updateCartBadge();
+  if (typeof updateWishlistBadge === 'function') updateWishlistBadge();
+}
+
+// Mobile Filter Drawer Toggle for Catalog (shop.html)
+function toggleMobileFilterModal(forceState) {
+  const sidebar = document.getElementById('filter-sidebar');
+  if (!sidebar) return;
+
+  let overlay = document.getElementById('mobile-filter-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'mobile-filter-overlay';
+    overlay.className = 'mobile-filter-overlay';
+    overlay.addEventListener('click', () => toggleMobileFilterModal(false));
+    document.body.appendChild(overlay);
+  }
+
+  const shouldOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
+  if (shouldOpen) {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  } else {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
 }
 
 // Promotional Offer Countdown Timer
@@ -335,6 +488,8 @@ if (typeof window !== 'undefined') {
   window.showToast = showToast;
   window.initStickyHeader = initStickyHeader;
   window.initMobileNav = initMobileNav;
+  window.initMobileBottomNav = initMobileBottomNav;
+  window.toggleMobileFilterModal = toggleMobileFilterModal;
   window.initCountdownTimer = initCountdownTimer;
   window.initTestimonialsCarousel = initTestimonialsCarousel;
   window.initCustomCakeCalculator = initCustomCakeCalculator;
@@ -345,6 +500,7 @@ if (typeof window !== 'undefined') {
 document.addEventListener('DOMContentLoaded', () => {
   initStickyHeader();
   initMobileNav();
+  initMobileBottomNav();
   initCountdownTimer();
   initTestimonialsCarousel();
   initCustomCakeCalculator();
