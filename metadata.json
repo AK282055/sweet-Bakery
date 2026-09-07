@@ -1,0 +1,7 @@
+{
+  "name": "Sweet Crumbs Cake Shop",
+  "description": "A complete, modern, premium and fully responsive cake shop e-commerce website with online ordering, custom cake builder, cart, and checkout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

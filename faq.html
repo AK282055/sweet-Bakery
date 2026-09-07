@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frequently Asked Questions | Sweet Crumbs Bakery</title>
+  <meta name="description" content="Find answers to all your questions about baking freshness, eggless preparations, midnight delivery slots, custom cake requests, and cancellations." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    .faq-accordion-item {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin-bottom: 14px;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .faq-question-btn {
+      width: 100%;
+      padding: 18px 24px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--color-chocolate);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: none;
+      cursor: pointer;
+    }
+
+    .faq-question-btn:hover {
+      color: var(--color-pink);
+    }
+
+    .faq-icon-cross {
+      font-size: 1.4rem;
+      transition: transform 0.25s ease;
+      color: var(--color-pink);
+    }
+
+    .faq-accordion-item.open .faq-icon-cross {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer-panel {
+      padding: 0 24px 20px;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+      display: none;
+      font-size: 0.95rem;
+    }
+
+    .faq-accordion-item.open .faq-answer-panel {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-msg">
+        ✨ Need quick order assistance? Our bakehouse support line is live: +91 98765 43210
+      </div>
+      <div class="announcement-links">
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-symbol">🧁</div>
+        <div class="logo-text-group">
+          <span class="logo-title">Sweet Crumbs</span>
+          <span class="logo-tagline">Artisan Bakehouse</span>
+        </div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop All</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="cart.html" class="action-icon-btn" title="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="badge-count cart-count-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section style="background: linear-gradient(135deg, #FFF5EC 0%, #FFFDF9 100%); padding: 50px 0; border-bottom: 1px solid var(--color-border);">
+      <div class="container" style="text-align: center; max-width: 700px;">
+        <span class="section-tag">Got Questions?</span>
+        <h1 style="font-size: 2.5rem; margin-top: 6px;">Frequently Asked Questions</h1>
+        <p style="color: var(--color-text-muted); margin-top: 8px;">
+          Find quick answers about delivery timings, dietary options, midnight slots, and customized orders.
+        </p>
+      </div>
+    </section>
+
+    <section style="padding: 70px 0;">
+      <div class="container" style="max-width: 820px;">
+        
+        <div class="faq-accordion-item open">
+          <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>Are your cakes really baked fresh on the day of delivery?</span>
+            <span class="faq-icon-cross">+</span>
+          </button>
+          <div class="faq-answer-panel">
+            Yes, 100%! We never sell frozen sponges. Our bakehouse schedule begins at 4:30 AM every day. Your cake is baked, filled, frosted, and chilled in our pastry room just a few hours prior to dispatch.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>Do you offer 100% Eggless (Vegetarian) cakes?</span>
+            <span class="faq-icon-cross">+</span>
+          </button>
+          <div class="faq-answer-panel">
+            Absolutely. Every single cake on our menu can be baked as 100% eggless. We use pure condensed milk, yogurt, and European dairy cream to achieve an extraordinarily moist and fluffy crumb that rivals traditional recipes. Look for the green dot badge on our products!
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>How does the Midnight Delivery (11:00 PM – 12:00 AM) work?</span>
+            <span class="faq-icon-cross">+</span>
+          </button>
+          <div class="faq-answer-panel">
+            For midnight surprises, our courier partners dispatch between 11:15 PM and 11:45 PM to ensure the cake rings your doorbell exactly around midnight. Please ensure someone is available to receive the call and answer the door.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>Can I customize the flavor, shape, or weight of my cake?</span>
+            <span class="faq-icon-cross">+</span>
+          </button>
+          <div class="faq-answer-panel">
+            Yes! You can use our interactive <a href="index.html#custom-cake-section" style="color: var(--color-pink); font-weight: 700;">Custom Cake Builder</a> on the homepage to pick your sponge, cream, weight (up to 5 Kg), shape, and handwritten chocolate plaque message. For complex themed fondant cakes, contact us via WhatsApp.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>How are the cakes packaged to prevent melting or damage during delivery?</span>
+            <span class="faq-icon-cross">+</span>
+          </button>
+          <div class="faq-answer-panel">
+            We use specialized 5-ply insulated thermal cake boxes equipped with food-grade dry ice packs for delicate frostings. Our delivery drivers use sanitized temperature-controlled bags mounted to anti-vibration vehicle racks.
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button type="button" class="faq-question-btn" onclick="toggleFaq(this)">
+            <span>Can I cancel or reschedule my cake order?</span>
+            <span class="faq-icon-cross">+</span>
+          </button>
+          <div class="faq-answer-panel">
+            Because our cakes are freshly baked to order, cancellations or rescheduling requests must be submitted at least 4 hours before your chosen delivery slot. Once our chef has begun frosting your cake, cancellations cannot be accepted. Please refer to our <a href="refund-policy.html" style="color: var(--color-pink); font-weight: 700;">Refund & Cancellation Policy</a>.
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom" style="border-top: none; padding-top: 0;">
+      <div>© 2026 Sweet Crumbs Artisan Bakery. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-accordion-item');
+      item.classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>

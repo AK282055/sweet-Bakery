@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart | Sweet Crumbs Bakery</title>
+  <meta name="description" content="Review your celebration cakes, customize notes, apply discount vouchers, and proceed to secure checkout." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <aside class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-msg">
+        ✨ Free refrigerated doorstep delivery on orders above ₹799!
+      </div>
+      <div class="announcement-links">
+        <a href="faq.html">Track Order</a>
+        <a href="contact.html">Support: +91 98765 43210</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-symbol">🧁</div>
+        <div class="logo-text-group">
+          <span class="logo-title">Sweet Crumbs</span>
+          <span class="logo-tagline">Artisan Bakehouse</span>
+        </div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop All</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="wishlist.html" class="action-icon-btn" title="Wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="badge-count wishlist-count-badge">0</span>
+        </a>
+
+        <a href="account.html" class="action-icon-btn" title="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+
+        <a href="cart.html" class="action-icon-btn" title="Cart" style="background-color: var(--color-pink-soft); color: var(--color-pink);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="badge-count cart-count-badge" style="display: inline-flex;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container" style="margin-top: 36px;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; border-bottom: 1px solid var(--color-border); padding-bottom: 16px;">
+        <h1 style="font-size: 2.3rem;">Your Celebration Basket</h1>
+        <a href="shop.html" style="color: var(--color-pink); font-weight: 600; font-size: 0.95rem;">← Continue Shopping</a>
+      </div>
+
+      <!-- Empty Cart State -->
+      <div id="cart-empty-state" style="display: none; text-align: center; padding: 80px 20px; background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin: 30px 0;">
+        <div style="font-size: 4rem; margin-bottom: 16px;">🍰</div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Your Cart is Feeling Light!</h2>
+        <p style="color: var(--color-text-muted); max-width: 480px; margin: 0 auto 28px;">
+          Looks like you haven't added any delicious cakes or pastries yet. Explore our handcrafted artisan delights and sweeten your day!
+        </p>
+        <a href="shop.html" class="btn btn-primary btn-lg">Browse Fresh Cakes</a>
+      </div>
+
+      <!-- Cart Loaded Layout -->
+      <div class="cart-layout-grid" id="cart-active-layout">
+        
+        <!-- Left: Cart Items List -->
+        <div>
+          <div id="cart-items-container">
+            <!-- Populated dynamically by js/cart.js -->
+          </div>
+
+          <!-- Baking Note / Instructions -->
+          <div style="background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 22px; margin-top: 24px; box-shadow: var(--shadow-sm);">
+            <h3 style="font-size: 1.15rem; margin-bottom: 8px;">Special Delivery or Chef Notes</h3>
+            <textarea id="cart-special-instructions" class="form-textarea" rows="2" placeholder="e.g. Ring the bell softly, please deliver near 5:00 PM, allergy notes..."></textarea>
+          </div>
+
+          <!-- Party Celebration Add-ons -->
+          <div style="background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 22px; margin-top: 20px; box-shadow: var(--shadow-sm);">
+            <h3 style="font-size: 1.15rem; margin-bottom: 14px;">Party Celebration Boosters</h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px;">
+              
+              <div style="display: flex; gap: 12px; align-items: center; border: 1px solid var(--color-border); padding: 12px; border-radius: var(--radius-sm);">
+                <div style="font-size: 1.8rem;">🎉</div>
+                <div style="flex: 1;">
+                  <div style="font-weight: 700; font-size: 0.9rem;">Sparkling Party Popper</div>
+                  <div style="font-size: 0.8rem; color: var(--color-text-muted);">₹75 each</div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" onclick="addToCart(10, 'Box of 6', 1, true)">+ Add</button>
+              </div>
+
+              <div style="display: flex; gap: 12px; align-items: center; border: 1px solid var(--color-border); padding: 12px; border-radius: var(--radius-sm);">
+                <div style="font-size: 1.8rem;">💌</div>
+                <div style="flex: 1;">
+                  <div style="font-weight: 700; font-size: 0.9rem;">Golden Greeting Card</div>
+                  <div style="font-size: 0.8rem; color: var(--color-text-muted);">₹49 each</div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" onclick="showToast('Greeting card added to order!', 'info')">+ Add</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div>
+          <div class="summary-card">
+            <h2 class="summary-title">Order Summary</h2>
+
+            <!-- Coupon Code Section -->
+            <div class="coupon-input-group">
+              <input type="text" id="coupon-code-input" class="coupon-input" placeholder="Enter Coupon Code" aria-label="Discount Coupon" />
+              <button type="button" class="btn btn-primary btn-sm" id="apply-coupon-btn">Apply</button>
+            </div>
+            
+            <div id="coupon-feedback-msg" style="font-size: 0.82rem; margin-top: -12px; margin-bottom: 16px;"></div>
+
+            <!-- Available coupons hint -->
+            <div style="background-color: var(--color-cream); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.82rem; margin-bottom: 20px; border-left: 3px solid var(--color-pink);">
+              💡 Try: <strong>WELCOME10</strong> (10% OFF) or <strong>SWEET50</strong> (₹50 OFF)
+            </div>
+
+            <!-- Totals Breakdown -->
+            <div class="summary-row">
+              <span>Items Subtotal:</span>
+              <span id="summary-subtotal">₹0</span>
+            </div>
+
+            <div class="summary-row" id="summary-discount-row" style="display: none; color: var(--color-pink);">
+              <span id="summary-discount-label">Discount:</span>
+              <span id="summary-discount-amount">-₹0</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Delivery Charges:</span>
+              <span id="summary-delivery">Free</span>
+            </div>
+
+            <div class="summary-row">
+              <span>GST & Packaging (5%):</span>
+              <span id="summary-tax">₹0</span>
+            </div>
+
+            <div class="summary-row total-row">
+              <span>Total Payable:</span>
+              <span id="summary-grand-total">₹0</span>
+            </div>
+
+            <!-- Checkout Action Button -->
+            <div style="margin-top: 24px;">
+              <a href="checkout.html" class="btn btn-primary btn-block btn-lg" id="proceed-to-checkout-btn">
+                Proceed to Checkout →
+              </a>
+            </div>
+
+            <!-- Security Badges -->
+            <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 8px; font-size: 0.82rem; color: var(--color-text-muted);">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--color-success);">✔</span> 100% Safe & Encrypted Payment
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--color-success);">✔</span> Chilled 5-Ply Thermal Delivery Box
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: var(--color-success);">✔</span> Quality Guarantee on Every Slice
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+        <div>© 2026 Sweet Crumbs Artisan Bakery. All Rights Reserved.</div>
+        <div>Need instant help? Call +91 98765 43210</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/payment.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Cart Render Initializer -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCartUI();
+
+      // Coupon application hook
+      const applyBtn = document.getElementById('apply-coupon-btn');
+      const couponInput = document.getElementById('coupon-code-input');
+      const feedback = document.getElementById('coupon-feedback-msg');
+
+      if (applyBtn && couponInput) {
+        applyBtn.addEventListener('click', () => {
+          const code = couponInput.value.trim().toUpperCase();
+          if (!code) {
+            feedback.innerHTML = '<span style="color: #D32F2F;">Please enter a promo code</span>';
+            return;
+          }
+
+          const res = applyCoupon(code);
+          if (res.success) {
+            feedback.innerHTML = `<span style="color: #2E7D32;">✔ ${res.message}</span>`;
+            couponInput.value = '';
+            renderCartUI();
+          } else {
+            feedback.innerHTML = `<span style="color: #D32F2F;">✖ ${res.message}</span>`;
+          }
+        });
+      }
+    });
+
+    function renderCartUI() {
+      const items = getCart();
+      const emptyState = document.getElementById('cart-empty-state');
+      const activeLayout = document.getElementById('cart-active-layout');
+      const container = document.getElementById('cart-items-container');
+
+      if (!emptyState || !activeLayout || !container) return;
+
+      if (items.length === 0) {
+        emptyState.style.display = 'block';
+        activeLayout.style.display = 'none';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      activeLayout.style.display = 'grid';
+
+      container.innerHTML = items.map(item => `
+        <div class="cart-item-card">
+          <div class="cart-item-img-wrap">
+            <img src="${item.image}" alt="${item.name}" class="cart-item-img" />
+          </div>
+
+          <div class="cart-item-info">
+            <div class="cart-item-header">
+              <h3 class="cart-item-title">${item.name}</h3>
+              <button type="button" class="cart-remove-btn" onclick="removeFromCart('${item.itemKey}')" title="Remove Item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="cart-item-meta">
+              <span><strong>Weight:</strong> ${item.weight}</span>
+              <span><strong>Type:</strong> ${item.eggless ? '🟢 Eggless' : '🔴 With Egg'}</span>
+            </div>
+
+            ${item.cakeMessage ? `
+              <div class="cart-item-msg">
+                <span class="msg-label">Plaque Message:</span> "${item.cakeMessage}"
+              </div>
+            ` : ''}
+
+            <div class="cart-item-bottom">
+              <div class="qty-stepper">
+                <button type="button" class="qty-btn" onclick="updateCartQuantity('${item.itemKey}', ${item.quantity - 1})">-</button>
+                <input type="text" class="qty-input" value="${item.quantity}" readonly />
+                <button type="button" class="qty-btn" onclick="updateCartQuantity('${item.itemKey}', ${item.quantity + 1})">+</button>
+              </div>
+
+              <div class="cart-item-pricing">
+                <span class="unit-price">₹${item.unitPrice} each</span>
+                <span class="item-subtotal">₹${item.unitPrice * item.quantity}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Update Order Summary
+      const totals = calculateCartTotals();
+      document.getElementById('summary-subtotal').textContent = `₹${totals.subtotal}`;
+      
+      const discountRow = document.getElementById('summary-discount-row');
+      if (totals.discount > 0) {
+        discountRow.style.display = 'flex';
+        document.getElementById('summary-discount-label').textContent = `Discount (${totals.couponCode}):`;
+        document.getElementById('summary-discount-amount').textContent = `-₹${totals.discount}`;
+      } else {
+        discountRow.style.display = 'none';
+      }
+
+      document.getElementById('summary-delivery').textContent = totals.delivery === 0 ? 'Free' : `₹${totals.delivery}`;
+      document.getElementById('summary-tax').textContent = `₹${totals.tax}`;
+      document.getElementById('summary-grand-total').textContent = `₹${totals.grandTotal}`;
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Saved Wishlist | Sweet Crumbs Bakery</title>
+  <meta name="description" content="View and manage your saved artisan cakes, pastries, and treats. Move your favorites to cart with a single click." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <aside class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-msg">
+        ✨ Save your favorite celebration cakes and order whenever the party starts!
+      </div>
+      <div class="announcement-links">
+        <a href="faq.html">FAQs</a>
+      </div>
+    </div>
+  </aside>
+
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-symbol">🧁</div>
+        <div class="logo-text-group">
+          <span class="logo-title">Sweet Crumbs</span>
+          <span class="logo-tagline">Artisan Bakehouse</span>
+        </div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link">Shop All</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="wishlist.html" class="action-icon-btn" title="Wishlist" style="background-color: var(--color-pink-soft); color: var(--color-pink);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="badge-count wishlist-count-badge" style="display: inline-flex;">0</span>
+        </a>
+
+        <a href="cart.html" class="action-icon-btn" title="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="badge-count cart-count-badge">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container" style="margin: 40px auto 80px;">
+      
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; border-bottom: 1px solid var(--color-border); padding-bottom: 16px;">
+        <div>
+          <span class="section-tag">Saved Favorites</span>
+          <h1 style="font-size: 2.3rem; margin-top: 4px;">My Celebration Wishlist</h1>
+        </div>
+        <a href="shop.html" style="color: var(--color-pink); font-weight: 600;">Browse More Cakes →</a>
+      </div>
+
+      <!-- Empty State -->
+      <div id="wishlist-empty-state" style="display: none; text-align: center; padding: 80px 20px; background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
+        <div style="font-size: 3.5rem; margin-bottom: 16px;">💖</div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Your Wishlist is Empty</h2>
+        <p style="color: var(--color-text-muted); max-width: 460px; margin: 0 auto 24px;">
+          Keep track of your dream birthday cakes, cheesecakes, and pastries by tapping the heart icon on any product.
+        </p>
+        <a href="shop.html" class="btn btn-primary btn-lg">Explore Bakery Menu</a>
+      </div>
+
+      <!-- Grid of Saved Items -->
+      <div class="products-grid" id="wishlist-products-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom" style="border-top: none; padding-top: 0;">
+      <div>© 2026 Sweet Crumbs Artisan Bakery. All Rights Reserved.</div>
+    </div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWishlistUI();
+    });
+
+    function renderWishlistUI() {
+      const items = getWishlist();
+      const emptyState = document.getElementById('wishlist-empty-state');
+      const grid = document.getElementById('wishlist-products-grid');
+
+      if (!emptyState || !grid) return;
+
+      if (items.length === 0) {
+        emptyState.style.display = 'block';
+        grid.style.display = 'none';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      grid.style.display = 'grid';
+
+      grid.innerHTML = items.map(p => `
+        <div class="product-card">
+          <div class="product-badge-group">
+            ${p.tag ? `<span class="badge badge-tag">${p.tag}</span>` : ''}
+            <span class="diet-indicator ${p.eggless ? 'eggless' : 'contains-egg'}">
+              <span class="diet-dot"></span>
+            </span>
+          </div>
+
+          <button type="button" class="wishlist-toggle-btn active" onclick="removeFromWishlistAndRender(${p.id})">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--color-pink)" stroke="currentColor" stroke-width="2">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+
+          <a href="product.html?id=${p.id}" class="product-img-wrap">
+            <img src="${p.image}" alt="${p.name}" class="product-img" />
+          </a>
+
+          <div class="product-content">
+            <span class="product-category">${p.category}</span>
+            <h3 class="product-title">
+              <a href="product.html?id=${p.id}">${p.name}</a>
+            </h3>
+            
+            <div class="product-pricing">
+              <span class="price-current">₹${p.price}</span>
+              ${p.oldPrice ? `<span class="price-old">₹${p.oldPrice}</span>` : ''}
+            </div>
+
+            <div class="product-actions">
+              <button type="button" class="btn btn-primary btn-sm btn-block" onclick="moveWishlistToCart(${p.id})">
+                Move to Cart 🛒
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function removeFromWishlistAndRender(id) {
+      removeFromWishlist(id);
+      renderWishlistUI();
+    }
+
+    function moveWishlistToCart(id) {
+      const product = getProductById(id);
+      if (product) {
+        addToCart(id, '1kg', 1, product.eggless);
+        removeFromWishlist(id);
+        renderWishlistUI();
+      }
+    }
+  </script>
+
+</body>
+</html>

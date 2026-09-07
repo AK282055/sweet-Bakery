@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Checkout | Sweet Crumbs Bakery</title>
+  <meta name="description" content="Complete your cake order with delivery address, delivery date/slot, custom card message, and encrypted payment." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    .checkout-layout-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      gap: 36px;
+      align-items: start;
+      margin-bottom: 80px;
+    }
+
+    .delivery-type-pill-group {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .delivery-type-pill {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      background-color: var(--color-white);
+      transition: var(--transition);
+    }
+
+    .delivery-type-pill.selected {
+      border-color: var(--color-pink);
+      background-color: var(--color-pink-soft);
+      color: var(--color-chocolate);
+    }
+
+    .slot-chips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .slot-chip {
+      padding: 10px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: var(--color-white);
+      transition: var(--transition);
+    }
+
+    .slot-chip.selected {
+      border-color: var(--color-pink);
+      background-color: var(--color-chocolate);
+      color: var(--color-white);
+    }
+
+    @media (max-width: 960px) {
+      .checkout-layout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Checkout Header -->
+  <header style="background: var(--color-white); border-bottom: 1px solid var(--color-border); padding: 18px 0;">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-symbol">🧁</div>
+        <div class="logo-text-group">
+          <span class="logo-title">Sweet Crumbs</span>
+          <span class="logo-tagline">Artisan Bakehouse</span>
+        </div>
+      </a>
+
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; color: var(--color-text-muted);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--color-success);"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>256-Bit Encrypted Checkout</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container" style="margin-top: 24px;">
+      
+      <!-- Checkout Stepper Bar -->
+      <div class="checkout-steps-nav" id="checkout-stepper-nav">
+        <div class="step-indicator-item active" data-step="1">
+          <span class="step-circle">1</span>
+          <span>Contact</span>
+        </div>
+        <div class="step-indicator-item" data-step="2">
+          <span class="step-circle">2</span>
+          <span>Address</span>
+        </div>
+        <div class="step-indicator-item" data-step="3">
+          <span class="step-circle">3</span>
+          <span>Delivery Slot</span>
+        </div>
+        <div class="step-indicator-item" data-step="4">
+          <span class="step-circle">4</span>
+          <span>Celebration</span>
+        </div>
+        <div class="step-indicator-item" data-step="5">
+          <span class="step-circle">5</span>
+          <span>Payment</span>
+        </div>
+      </div>
+
+      <!-- Main Layout -->
+      <div class="checkout-layout-grid">
+        
+        <!-- Left: Form Step Panels -->
+        <div>
+
+          <!-- STEP 1: CONTACT DETAILS -->
+          <div class="checkout-step-panel" id="step-panel-1">
+            <div class="step-header">
+              <span class="section-tag">Step 1 of 5</span>
+              <h2 class="step-title">Your Contact Information</h2>
+              <p class="step-desc">We will send your order confirmation, invoice, and real-time live delivery tracking here.</p>
+            </div>
+
+            <form id="checkout-contact-form" onsubmit="handleContactNext(event)">
+              <div class="form-group">
+                <label class="form-label" for="contact-name">Full Name *</label>
+                <input type="text" id="contact-name" class="form-input" required placeholder="e.g. Diya Kapoor" />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="contact-phone">Phone Number (For Delivery Agent) *</label>
+                  <input type="tel" id="contact-phone" class="form-input" required placeholder="e.g. 9876543210" pattern="[0-9]{10}" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="contact-email">Email Address *</label>
+                  <input type="email" id="contact-email" class="form-input" required placeholder="e.g. diya@example.com" />
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; margin-top: 24px;">
+                <button type="submit" class="btn btn-primary btn-lg">Continue to Address →</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- STEP 2: DELIVERY ADDRESS -->
+          <div class="checkout-step-panel" id="step-panel-2" style="display: none;">
+            <div class="step-header">
+              <span class="section-tag">Step 2 of 5</span>
+              <h2 class="step-title">Delivery Destination</h2>
+              <p class="step-desc">Where should our refrigerated delivery driver deliver your cake?</p>
+            </div>
+
+            <form id="checkout-address-form" onsubmit="handleAddressNext(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="addr-flat">House / Flat / Floor No. *</label>
+                  <input type="text" id="addr-flat" class="form-input" required placeholder="e.g. Apartment 402, Tower B" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="addr-society">Apartment / Society / Building *</label>
+                  <input type="text" id="addr-society" class="form-input" required placeholder="e.g. Greenwood Heights" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="addr-street">Street Address & Landmark *</label>
+                <input type="text" id="addr-street" class="form-input" required placeholder="e.g. Near Rose Garden, Sector 14" />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="addr-city">City *</label>
+                  <input type="text" id="addr-city" class="form-input" required value="Sonipat" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="addr-pincode">Pincode (6-Digits) *</label>
+                  <input type="text" id="addr-pincode" class="form-input" required placeholder="131001" maxlength="6" pattern="[0-9]{6}" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Address Type</label>
+                <div style="display: flex; gap: 16px;">
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <input type="radio" name="addr_type" value="home" checked style="accent-color: var(--color-chocolate);" /> Home
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <input type="radio" name="addr_type" value="office" style="accent-color: var(--color-chocolate);" /> Office / Business
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                    <input type="radio" name="addr_type" value="other" style="accent-color: var(--color-chocolate);" /> Party Venue / Other
+                  </label>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+                <button type="button" class="btn btn-outline" onclick="goToStep(1)">← Back</button>
+                <button type="submit" class="btn btn-primary btn-lg">Continue to Slot Selection →</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- STEP 3: DELIVERY DATE & SLOT -->
+          <div class="checkout-step-panel" id="step-panel-3" style="display: none;">
+            <div class="step-header">
+              <span class="section-tag">Step 3 of 5</span>
+              <h2 class="step-title">Delivery Date & Time Slot</h2>
+              <p class="step-desc">Pick your preferred delivery window so our ovens bake your cake right on time.</p>
+            </div>
+
+            <form id="checkout-slot-form" onsubmit="handleSlotNext(event)">
+              
+              <!-- Delivery Type Selector -->
+              <div class="delivery-type-pill-group">
+                <div class="delivery-type-pill selected" onclick="selectDeliveryType('standard', this)">
+                  <div style="font-size: 1.2rem; margin-bottom: 2px;">🚚</div>
+                  <div>Standard Delivery</div>
+                  <div style="font-size: 0.78rem; color: var(--color-text-muted);">Free (above ₹799)</div>
+                </div>
+                <div class="delivery-type-pill" onclick="selectDeliveryType('fixed', this)">
+                  <div style="font-size: 1.2rem; margin-bottom: 2px;">⏱️</div>
+                  <div>Fixed 1-Hr Slot</div>
+                  <div style="font-size: 0.78rem; color: var(--color-text-muted);">+₹75 priority</div>
+                </div>
+                <div class="delivery-type-pill" onclick="selectDeliveryType('midnight', this)">
+                  <div style="font-size: 1.2rem; margin-bottom: 2px;">🌙</div>
+                  <div>Midnight Surprise</div>
+                  <div style="font-size: 0.78rem; color: var(--color-text-muted);">11:00 PM – 12:00 AM</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="delivery-date-input">Select Date *</label>
+                <input type="date" id="delivery-date-input" class="form-input" required />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Available Time Slots</label>
+                <div class="slot-chips-grid" id="slot-chips-list">
+                  <div class="slot-chip selected" onclick="selectSlot('09:00 AM - 12:00 PM', this)">09:00 AM – 12:00 PM</div>
+                  <div class="slot-chip" onclick="selectSlot('12:00 PM - 03:00 PM', this)">12:00 PM – 03:00 PM</div>
+                  <div class="slot-chip" onclick="selectSlot('03:00 PM - 06:00 PM', this)">03:00 PM – 06:00 PM</div>
+                  <div class="slot-chip" onclick="selectSlot('06:00 PM - 09:00 PM', this)">06:00 PM – 09:00 PM</div>
+                  <div class="slot-chip" onclick="selectSlot('11:00 PM - 12:00 AM', this)">11:00 PM – 12:00 AM (Midnight)</div>
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+                <button type="button" class="btn btn-outline" onclick="goToStep(2)">← Back</button>
+                <button type="submit" class="btn btn-primary btn-lg">Continue to Celebration Details →</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- STEP 4: CELEBRATION DETAILS -->
+          <div class="checkout-step-panel" id="step-panel-4" style="display: none;">
+            <div class="step-header">
+              <span class="section-tag">Step 4 of 5</span>
+              <h2 class="step-title">Celebration Details & Gift Note</h2>
+              <p class="step-desc">Personalize your surprise for the special recipient.</p>
+            </div>
+
+            <form id="checkout-celebration-form" onsubmit="handleCelebrationNext(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="recipient-name">Recipient Name (Optional)</label>
+                  <input type="text" id="recipient-name" class="form-input" placeholder="Leave empty if for yourself" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="celebration-occasion">Occasion</label>
+                  <select id="celebration-occasion" class="form-select">
+                    <option value="birthday">Birthday Party 🎂</option>
+                    <option value="anniversary">Anniversary Celebration 💍</option>
+                    <option value="romance">Romantic Surprise ❤️</option>
+                    <option value="congrats">Congratulations / Achievement 🏆</option>
+                    <option value="farewell">Farewell / Best Wishes ✨</option>
+                    <option value="craving">Weekend Dessert Craving 🍰</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="card-message">Personalized Greeting Card Message</label>
+                <textarea id="card-message" class="form-textarea" rows="3" placeholder="Write heartfelt wishes to be printed on a complimentary golden celebration card..."></textarea>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; margin-top: 24px;">
+                <button type="button" class="btn btn-outline" onclick="goToStep(3)">← Back</button>
+                <button type="submit" class="btn btn-primary btn-lg">Proceed to Payment →</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- STEP 5: PAYMENT & FINAL REVIEW -->
+          <div class="checkout-step-panel" id="step-panel-5" style="display: none;">
+            <div class="step-header">
+              <span class="section-tag">Step 5 of 5</span>
+              <h2 class="step-title">Choose Payment Method</h2>
+              <p class="step-desc">All transactions are secured with 256-bit SSL encryption.</p>
+            </div>
+
+            <!-- Payment Methods Grid -->
+            <div class="payment-methods-grid">
+              
+              <div class="payment-option-card selected" onclick="selectPaymentMethod('upi', this)">
+                <input type="radio" name="payment_method" value="upi" checked style="accent-color: var(--color-chocolate); margin-top: 3px;" />
+                <div>
+                  <div style="font-weight: 700;">Instant UPI</div>
+                  <div style="font-size: 0.82rem; color: var(--color-text-muted);">Google Pay, PhonePe, Paytm, BHIM</div>
+                </div>
+              </div>
+
+              <div class="payment-option-card" onclick="selectPaymentMethod('card', this)">
+                <input type="radio" name="payment_method" value="card" style="accent-color: var(--color-chocolate); margin-top: 3px;" />
+                <div>
+                  <div style="font-weight: 700;">Credit / Debit Card</div>
+                  <div style="font-size: 0.82rem; color: var(--color-text-muted);">Visa, MasterCard, RuPay, Amex</div>
+                </div>
+              </div>
+
+              <div class="payment-option-card" onclick="selectPaymentMethod('netbanking', this)">
+                <input type="radio" name="payment_method" value="netbanking" style="accent-color: var(--color-chocolate); margin-top: 3px;" />
+                <div>
+                  <div style="font-weight: 700;">Net Banking</div>
+                  <div style="font-size: 0.82rem; color: var(--color-text-muted);">HDFC, SBI, ICICI, Axis & 50+ banks</div>
+                </div>
+              </div>
+
+              <div class="payment-option-card" onclick="selectPaymentMethod('cod', this)">
+                <input type="radio" name="payment_method" value="cod" style="accent-color: var(--color-chocolate); margin-top: 3px;" />
+                <div>
+                  <div style="font-weight: 700;">Cash on Delivery (COD)</div>
+                  <div style="font-size: 0.82rem; color: var(--color-text-muted);">Pay cash or UPI to courier partner</div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Review Details Summary Box -->
+            <div style="background-color: var(--color-cream); border-radius: var(--radius-md); padding: 18px; margin: 24px 0; font-size: 0.9rem;">
+              <div style="font-weight: 700; margin-bottom: 8px; color: var(--color-chocolate);">
+                📋 Order Delivery Summary:
+              </div>
+              <div id="checkout-review-summary-text" style="color: var(--color-text-muted); line-height: 1.6;">
+                Reviewing order...
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px;">
+              <button type="button" class="btn btn-outline" onclick="goToStep(4)">← Back</button>
+              <button type="button" class="btn btn-primary btn-lg" id="place-order-final-btn" onclick="executeFinalOrderPlacement()">
+                🔒 Confirm & Pay ₹<span id="btn-payable-amount">0</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Right: Sticky Order Snapshot -->
+        <div>
+          <div class="summary-card">
+            <h3 class="summary-title" style="font-size: 1.2rem;">Order Snapshot</h3>
+            
+            <div id="checkout-mini-items-list" style="margin-bottom: 20px; max-height: 260px; overflow-y: auto;">
+              <!-- Mini items rendered by JS -->
+            </div>
+
+            <div class="summary-row">
+              <span>Items Subtotal:</span>
+              <span id="checkout-subtotal">₹0</span>
+            </div>
+
+            <div class="summary-row" id="checkout-discount-row" style="display: none; color: var(--color-pink);">
+              <span>Discount:</span>
+              <span id="checkout-discount">-₹0</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Delivery Fee:</span>
+              <span id="checkout-delivery">Free</span>
+            </div>
+
+            <div class="summary-row">
+              <span>Taxes (5% GST):</span>
+              <span id="checkout-tax">₹0</span>
+            </div>
+
+            <div class="summary-row total-row">
+              <span>Total Payable:</span>
+              <span id="checkout-grand-total">₹0</span>
+            </div>
+
+            <div style="margin-top: 20px; background: #F8F4F0; padding: 12px; border-radius: var(--radius-sm); font-size: 0.8rem; color: var(--color-text-muted); text-align: center;">
+              🍰 Baked fresh on morning of delivery • 100% Quality Guaranteed
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Payment Processing Simulation / Gateway Modal -->
+  <div class="payment-modal-overlay" id="payment-processing-modal">
+    <div class="payment-modal-card">
+      <div class="payment-spinner" id="payment-modal-spinner"></div>
+      <div class="payment-icon-success" id="payment-modal-success" style="display: none;">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3 id="payment-modal-title" style="font-size: 1.4rem; margin-bottom: 8px;">Contacting Payment Gateway</h3>
+      <p id="payment-modal-desc" style="color: var(--color-text-muted); font-size: 0.92rem;">
+        Please do not refresh or close this window while we secure your celebration order...
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/payment.js"></script>
+  <script src="js/checkout.js"></script>
+  <script src="js/main.js"></script>
+
+  <!-- Setup checkout page handlers -->
+  <script>
+    let currentStep = 1;
+    let selectedDeliveryType = 'standard';
+    let selectedSlot = '09:00 AM - 12:00 PM';
+    let selectedPayment = 'upi';
+
+    let orderData = {
+      contact: {},
+      address: {},
+      slot: {},
+      celebration: {},
+      paymentMethod: 'upi'
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if cart is empty
+      const items = getCart();
+      if (items.length === 0) {
+        window.location.href = 'cart.html';
+        return;
+      }
+
+      // Populate mini snapshot
+      renderOrderSnapshot();
+
+      // Pre-fill date with tomorrow as default
+      const dateInput = document.getElementById('delivery-date-input');
+      if (dateInput) {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const yyyy = tomorrow.getFullYear();
+        const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+        const dd = String(tomorrow.getDate()).padStart(2, '0');
+        dateInput.value = `${yyyy}-${mm}-${dd}`;
+        dateInput.min = new Date().toISOString().split('T')[0];
+      }
+
+      // Pre-fill user if logged in
+      if (typeof getCurrentUser === 'function') {
+        const user = getCurrentUser();
+        if (user) {
+          const nameInput = document.getElementById('contact-name');
+          const emailInput = document.getElementById('contact-email');
+          const phoneInput = document.getElementById('contact-phone');
+          if (nameInput && user.name) nameInput.value = user.name;
+          if (emailInput && user.email) emailInput.value = user.email;
+          if (phoneInput && user.phone) phoneInput.value = user.phone;
+        }
+      }
+    });
+
+    function renderOrderSnapshot() {
+      const items = getCart();
+      const list = document.getElementById('checkout-mini-items-list');
+      const totals = calculateCartTotals();
+
+      if (list) {
+        list.innerHTML = items.map(it => `
+          <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #F6EEE7;">
+            <img src="${it.image}" alt="${it.name}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 6px;" />
+            <div style="flex: 1; font-size: 0.85rem;">
+              <div style="font-weight: 700; color: var(--color-chocolate);">${it.name}</div>
+              <div style="color: var(--color-text-muted);">${it.weight} × ${it.quantity}</div>
+            </div>
+            <div style="font-weight: 700; font-size: 0.9rem;">₹${it.unitPrice * it.quantity}</div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('checkout-subtotal').textContent = `₹${totals.subtotal}`;
+      
+      const discRow = document.getElementById('checkout-discount-row');
+      if (totals.discount > 0) {
+        discRow.style.display = 'flex';
+        document.getElementById('checkout-discount').textContent = `-₹${totals.discount}`;
+      } else {
+        discRow.style.display = 'none';
+      }
+
+      document.getElementById('checkout-delivery').textContent = totals.delivery === 0 ? 'Free' : `₹${totals.delivery}`;
+      document.getElementById('checkout-tax').textContent = `₹${totals.tax}`;
+      document.getElementById('checkout-grand-total').textContent = `₹${totals.grandTotal}`;
+      document.getElementById('btn-payable-amount').textContent = totals.grandTotal;
+    }
+
+    function goToStep(step) {
+      currentStep = step;
+      for (let i = 1; i <= 5; i++) {
+        const panel = document.getElementById(`step-panel-${i}`);
+        if (panel) panel.style.display = i === step ? 'block' : 'none';
+      }
+
+      // Update Stepper Navigation
+      document.querySelectorAll('.step-indicator-item').forEach(el => {
+        const stepNum = parseInt(el.getAttribute('data-step'), 10);
+        el.classList.remove('active', 'completed');
+        if (stepNum === step) {
+          el.classList.add('active');
+        } else if (stepNum < step) {
+          el.classList.add('completed');
+        }
+      });
+
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    function handleContactNext(e) {
+      e.preventDefault();
+      orderData.contact = {
+        name: document.getElementById('contact-name').value.trim(),
+        phone: document.getElementById('contact-phone').value.trim(),
+        email: document.getElementById('contact-email').value.trim(),
+      };
+      goToStep(2);
+    }
+
+    function handleAddressNext(e) {
+      e.preventDefault();
+      orderData.address = {
+        flat: document.getElementById('addr-flat').value.trim(),
+        society: document.getElementById('addr-society').value.trim(),
+        street: document.getElementById('addr-street').value.trim(),
+        city: document.getElementById('addr-city').value.trim(),
+        pincode: document.getElementById('addr-pincode').value.trim(),
+        type: document.querySelector('input[name="addr_type"]:checked').value
+      };
+      goToStep(3);
+    }
+
+    function selectDeliveryType(type, element) {
+      selectedDeliveryType = type;
+      document.querySelectorAll('.delivery-type-pill').forEach(p => p.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function selectSlot(slot, element) {
+      selectedSlot = slot;
+      document.querySelectorAll('.slot-chip').forEach(s => s.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    function handleSlotNext(e) {
+      e.preventDefault();
+      orderData.slot = {
+        type: selectedDeliveryType,
+        date: document.getElementById('delivery-date-input').value,
+        time: selectedSlot
+      };
+      goToStep(4);
+    }
+
+    function handleCelebrationNext(e) {
+      e.preventDefault();
+      orderData.celebration = {
+        recipientName: document.getElementById('recipient-name').value.trim(),
+        occasion: document.getElementById('celebration-occasion').value,
+        cardMessage: document.getElementById('card-message').value.trim()
+      };
+
+      // Populate step 5 review summary
+      const summaryElem = document.getElementById('checkout-review-summary-text');
+      if (summaryElem) {
+        summaryElem.innerHTML = `
+          <strong>Deliver to:</strong> ${orderData.contact.name} (${orderData.contact.phone})<br>
+          <strong>Address:</strong> ${orderData.address.flat}, ${orderData.address.society}, ${orderData.address.street}, ${orderData.address.city} – ${orderData.address.pincode}<br>
+          <strong>Slot:</strong> ${orderData.slot.date} (${orderData.slot.time}) • <strong>Occasion:</strong> ${orderData.celebration.occasion}
+        `;
+      }
+
+      goToStep(5);
+    }
+
+    function selectPaymentMethod(method, element) {
+      selectedPayment = method;
+      orderData.paymentMethod = method;
+      document.querySelectorAll('.payment-option-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      const radio = element.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    }
+
+    function executeFinalOrderPlacement() {
+      const modal = document.getElementById('payment-processing-modal');
+      const spinner = document.getElementById('payment-modal-spinner');
+      const successIcon = document.getElementById('payment-modal-success');
+      const title = document.getElementById('payment-modal-title');
+      const desc = document.getElementById('payment-modal-desc');
+
+      modal.style.display = 'flex';
+
+      const totals = calculateCartTotals();
+      const cartItems = getCart();
+
+      const fullOrder = {
+        id: 'SC-' + Math.floor(100000 + Math.random() * 900000),
+        date: new Date().toISOString(),
+        items: cartItems,
+        customer: orderData.contact,
+        shippingAddress: orderData.address,
+        deliverySlot: orderData.slot,
+        celebration: orderData.celebration,
+        paymentMethod: selectedPayment,
+        paymentStatus: selectedPayment === 'cod' ? 'Pending (COD)' : 'Completed',
+        totals: totals,
+        status: 'Order Placed'
+      };
+
+      // Simulated Payment Gateway processing
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        successIcon.style.display = 'flex';
+        title.textContent = 'Payment Authorized Successfully!';
+        desc.textContent = 'Generating your order confirmation and dispatching notification...';
+
+        // Save order to localStorage
+        const savedOrders = JSON.parse(localStorage.getItem('sweet_crumbs_orders') || '[]');
+        savedOrders.unshift(fullOrder);
+        localStorage.setItem('sweet_crumbs_orders', JSON.stringify(savedOrders));
+
+        // Save last placed order
+        localStorage.setItem('sweet_crumbs_last_order', JSON.stringify(fullOrder));
+
+        // Clear cart
+        clearCart();
+
+        setTimeout(() => {
+          window.location.href = `order-success.html?orderId=${fullOrder.id}`;
+        }, 1200);
+
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>

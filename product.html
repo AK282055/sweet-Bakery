@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details | Sweet Crumbs Bakery</title>
+  <meta name="description" content="View artisan cake details, select weight, customize handwritten chocolate message, and order with same-day express delivery." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    .product-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 50px;
+      margin: 40px 0 70px;
+      align-items: start;
+    }
+
+    .gallery-main-img-card {
+      background-color: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-main-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-thumbnails-row {
+      display: flex;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .gallery-thumb-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-sm);
+      border: 2px solid transparent;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: var(--transition);
+    }
+
+    .gallery-thumb-btn.active, .gallery-thumb-btn:hover {
+      border-color: var(--color-pink);
+      opacity: 1;
+    }
+
+    .gallery-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .weight-options-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .weight-chip {
+      padding: 10px 18px;
+      border: 1.5px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      background: var(--color-white);
+      transition: var(--transition);
+    }
+
+    .weight-chip.selected {
+      border-color: var(--color-pink);
+      background-color: var(--color-pink-soft);
+      color: var(--color-chocolate);
+    }
+
+    .pincode-checker-box {
+      background-color: var(--color-cream-dark);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 24px 0;
+    }
+
+    .product-tabs-nav {
+      display: flex;
+      gap: 30px;
+      border-bottom: 2px solid var(--color-border);
+      margin-bottom: 24px;
+    }
+
+    .product-tab-btn {
+      padding: 12px 0;
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--color-text-muted);
+      position: relative;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .product-tab-btn.active {
+      color: var(--color-chocolate);
+    }
+
+    .product-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--color-pink);
+    }
+
+    .product-tab-pane {
+      display: none;
+      line-height: 1.8;
+      color: var(--color-text-main);
+    }
+
+    .product-tab-pane.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @media (max-width: 900px) {
+      .product-detail-grid {
+        grid-template-columns: 1fr;
+      }
+      .gallery-main-img-card {
+        height: 340px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <aside class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-msg">
+        ✨ Order now for Same-Day Guaranteed Delivery • 100% Freshly Baked
+      </div>
+      <div class="announcement-links">
+        <a href="faq.html">Order FAQs</a>
+        <a href="contact.html">Support: +91 98765 43210</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-symbol">🧁</div>
+        <div class="logo-text-group">
+          <span class="logo-title">Sweet Crumbs</span>
+          <span class="logo-tagline">Artisan Bakehouse</span>
+        </div>
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shop.html" class="nav-link active">Shop All</a>
+        <a href="about.html" class="nav-link">About Us</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="wishlist.html" class="action-icon-btn" title="Wishlist">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="badge-count wishlist-count-badge">0</span>
+        </a>
+
+        <a href="account.html" class="action-icon-btn" title="Account">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+
+        <a href="cart.html" class="action-icon-btn" title="Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+          </svg>
+          <span class="badge-count cart-count-badge">0</span>
+        </a>
+
+        <button type="button" class="mobile-toggle-btn" id="mobile-menu-btn" aria-label="Open Menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer -->
+  <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+  <aside class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <div class="mobile-drawer-header">
+      <div class="brand-logo">
+        <span class="logo-symbol">🧁</span>
+        <span class="logo-title" style="font-size: 1.3rem;">Sweet Crumbs</span>
+      </div>
+      <button type="button" class="mobile-drawer-close" id="mobile-nav-close">&times;</button>
+    </div>
+    <div class="mobile-drawer-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="shop.html" class="nav-link">Shop All Cakes</a>
+      <a href="cart.html" class="nav-link">My Cart (<span class="cart-count-badge" style="display:inline;">0</span>)</a>
+      <a href="wishlist.html" class="nav-link">My Wishlist</a>
+      <a href="account.html" class="nav-link">My Account</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="container" style="margin-top: 24px;">
+      <!-- Breadcrumb -->
+      <nav style="font-size: 0.88rem; color: var(--color-text-muted); margin-bottom: 20px;">
+        <a href="index.html">Home</a> &nbsp;/&nbsp;
+        <a href="shop.html">Shop</a> &nbsp;/&nbsp;
+        <span id="breadcrumb-category">Cakes</span> &nbsp;/&nbsp;
+        <span id="breadcrumb-product-name" style="color: var(--color-chocolate); font-weight: 600;">Product Name</span>
+      </nav>
+
+      <!-- Main Product Details Grid -->
+      <div class="product-detail-grid">
+        
+        <!-- Left: Image Gallery -->
+        <div>
+          <div class="gallery-main-img-card">
+            <img src="" alt="Product Detail Image" id="main-product-img" class="gallery-main-img" />
+          </div>
+          <div class="gallery-thumbnails-row" id="product-thumbnails-container">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Right: Purchasing Controls -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <span class="section-tag" id="product-category-tag">Artisan Cake</span>
+            <button type="button" class="action-icon-btn" id="product-wishlist-btn" title="Add to Wishlist" style="background-color: var(--color-white); border: 1px solid var(--color-border);">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+            </button>
+          </div>
+
+          <h1 id="product-title-h1" style="font-size: 2.2rem; margin-bottom: 12px;">Delicious Cake Title</h1>
+          
+          <!-- Rating & Diet Info -->
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap;">
+            <div class="product-rating" style="margin-bottom: 0;">
+              <span class="stars">★★★★★</span>
+              <span class="score" id="product-rating-score">4.9</span>
+              <span class="count" id="product-reviews-count">(120 reviews)</span>
+            </div>
+            
+            <div id="product-diet-badge-container"></div>
+          </div>
+
+          <!-- Pricing Section -->
+          <div class="product-pricing" style="margin-bottom: 24px; border-bottom: 1px solid var(--color-border); padding-bottom: 16px;">
+            <span class="price-current" id="product-active-price" style="font-size: 2.1rem;">₹650</span>
+            <span class="price-old" id="product-old-price" style="font-size: 1.2rem;">₹750</span>
+            <span class="price-discount-tag" id="product-discount-tag">13% OFF</span>
+            <span style="font-size: 0.85rem; color: var(--color-text-muted); margin-left: 8px;">(Inclusive of all taxes)</span>
+          </div>
+
+          <!-- Weight Selection -->
+          <div style="margin-bottom: 22px;">
+            <label class="form-label" style="margin-bottom: 8px;">Select Weight / Size:</label>
+            <div class="weight-options-group" id="weight-selector-chips">
+              <!-- Dynamically populated chips -->
+            </div>
+          </div>
+
+          <!-- Eggless / Vegetarian Option Toggle -->
+          <div style="margin-bottom: 22px;">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 600;">
+              <input type="checkbox" id="eggless-checkbox" style="width: 18px; height: 18px; accent-color: var(--color-chocolate);" />
+              <span>Bake this as 100% Pure Vegetarian / Eggless</span>
+            </label>
+          </div>
+
+          <!-- Personalized Message on Cake -->
+          <div class="form-group">
+            <label class="form-label" for="cake-message-input">Custom Handwritten Chocolate Message (Optional):</label>
+            <input type="text" id="cake-message-input" class="form-input" placeholder="e.g. Happy 21st Birthday Diya! ❤️" maxlength="40" />
+            <span style="font-size: 0.78rem; color: var(--color-text-muted);">Max 40 characters. Piped on a chocolate plaque for free.</span>
+          </div>
+
+          <!-- Complimentary Add-ons -->
+          <div style="display: flex; gap: 20px; margin: 18px 0; font-size: 0.9rem;">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="addon-candles" checked style="accent-color: var(--color-chocolate);" />
+              <span>Complimentary Birthday Candles (Set of 6)</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="addon-knife" checked style="accent-color: var(--color-chocolate);" />
+              <span>Bakehouse Wooden Knife</span>
+            </label>
+          </div>
+
+          <!-- Quantity Stepper & CTA Buttons -->
+          <div style="display: flex; gap: 16px; align-items: center; margin: 28px 0;">
+            <div class="qty-stepper" style="padding: 4px;">
+              <button type="button" class="qty-btn" id="qty-minus-btn" aria-label="Decrease quantity">-</button>
+              <input type="number" id="qty-input-field" class="qty-input" value="1" min="1" max="10" readonly />
+              <button type="button" class="qty-btn" id="qty-plus-btn" aria-label="Increase quantity">+</button>
+            </div>
+
+            <button type="button" class="btn btn-primary btn-lg" id="add-to-cart-action-btn" style="flex: 1;">
+              🛒 Add to Cart
+            </button>
+
+            <button type="button" class="btn btn-secondary btn-lg" id="buy-now-action-btn" style="flex: 1;">
+              ⚡ Buy Now
+            </button>
+          </div>
+
+          <!-- Pincode Delivery Checker -->
+          <div class="pincode-checker-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span style="font-weight: 700; font-size: 0.95rem; color: var(--color-chocolate);">
+                🚚 Check Delivery Availability & Slot
+              </span>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <input type="text" id="pincode-input" class="form-input" placeholder="Enter 6-digit Pincode (e.g. 131001, 110001)" maxlength="6" style="flex: 1;" />
+              <button type="button" class="btn btn-outline" id="check-pincode-btn">Check</button>
+            </div>
+            <div id="pincode-result-msg" style="font-size: 0.85rem; margin-top: 8px; font-weight: 600;"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Product Information Tabs -->
+      <section style="margin-bottom: 70px;">
+        <div class="product-tabs-nav">
+          <button type="button" class="product-tab-btn active" data-tab="tab-description">Chef's Description</button>
+          <button type="button" class="product-tab-btn" data-tab="tab-ingredients">Ingredients & Allergens</button>
+          <button type="button" class="product-tab-btn" data-tab="tab-delivery">Storage & Serving Info</button>
+          <button type="button" class="product-tab-btn" data-tab="tab-reviews">Customer Reviews</button>
+        </div>
+
+        <div class="product-tab-pane active" id="tab-description">
+          <p id="tab-desc-text" style="margin-bottom: 16px;">
+            Description goes here...
+          </p>
+          <ul style="list-style: disc; padding-left: 20px; color: var(--color-text-muted);">
+            <li>Baked freshly on the day of delivery from our certified confectionery oven.</li>
+            <li>Layered with silky smooth European dairy cream and pure extracts.</li>
+            <li>Packaged in our sturdy, temperature-retaining presentation box.</li>
+          </ul>
+        </div>
+
+        <div class="product-tab-pane" id="tab-ingredients">
+          <p id="tab-ingredients-text" style="margin-bottom: 14px;">
+            Belgian Couverture Chocolate (54.5%), Pure Butter, Heavy Whipping Dairy Cream, Refined Wheat Flour, Brown Cane Sugar, Madagascar Bourbon Vanilla Extract.
+          </p>
+          <div style="background-color: var(--color-warm-beige); padding: 14px 18px; border-radius: var(--radius-sm); font-size: 0.9rem;">
+            <strong>Allergen Notice:</strong> Contains Dairy and Gluten. Prepared in a bakehouse facility that also processes almonds, hazelnuts, and walnuts.
+          </div>
+        </div>
+
+        <div class="product-tab-pane" id="tab-delivery">
+          <p>
+            <strong>Storage Instructions:</strong> Upon delivery, refrigerate immediately at 4°C – 8°C. Remove from the refrigerator 15–20 minutes before slicing to experience the optimal creamy texture and melting flavor notes. Consume within 48 hours for best taste.
+          </p>
+        </div>
+
+        <div class="product-tab-pane" id="tab-reviews">
+          <div style="display: flex; gap: 30px; margin-bottom: 24px; align-items: center;">
+            <div style="text-align: center; background: var(--color-cream); padding: 20px; border-radius: var(--radius-md); min-width: 140px;">
+              <div style="font-size: 3rem; font-weight: 800; color: var(--color-chocolate); line-height: 1;">4.9</div>
+              <div style="color: #F5A623;">★★★★★</div>
+              <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 4px;">Based on 120+ reviews</div>
+            </div>
+            <div>
+              <h4 style="font-size: 1.1rem; margin-bottom: 4px;">Celebration Verified Purchases</h4>
+              <p style="color: var(--color-text-muted); font-size: 0.9rem;">
+                All reviews are collected from customers who ordered through our online shop.
+              </p>
+            </div>
+          </div>
+
+          <div style="border-top: 1px solid var(--color-border); padding-top: 20px;">
+            <div style="margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <strong>Ananya Sengupta</strong>
+                <span style="color: #F5A623;">★★★★★</span>
+              </div>
+              <p style="color: var(--color-text-muted); font-size: 0.9rem;">"Ordered for my mom's 50th birthday. The design and texture were simply world-class. Arrived cold and intact!"</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Products Recommendations -->
+      <section style="margin-bottom: 80px;">
+        <div class="section-header" style="text-align: left; margin-bottom: 28px;">
+          <span class="section-tag">Complement Your Treat</span>
+          <h2 class="section-title" style="font-size: 1.8rem;">You May Also Savor</h2>
+        </div>
+        <div class="products-grid" id="related-products-grid">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-logo" style="margin-bottom: 16px;">
+            <span class="logo-symbol">🧁</span>
+            <span class="logo-title" style="color: var(--color-white); font-size: 1.4rem;">Sweet Crumbs</span>
+          </div>
+          <p style="font-size: 0.9rem;">Freshly baked cakes, pastries and dessert hampers for every celebration.</p>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Shop Delights</h4>
+          <ul class="footer-links">
+            <li><a href="shop.html">All Cakes</a></li>
+            <li><a href="shop.html?category=birthday-cakes">Birthday Cakes</a></li>
+            <li><a href="shop.html?category=chocolate-cakes">Chocolate Cakes</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Customer Care</h4>
+          <ul class="footer-links">
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="faq.html">FAQs</a></li>
+            <li><a href="account.html">Track Order</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Company</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-col-title">Need Help?</h4>
+          <p style="font-size: 0.88rem;">Call: +91 98765 43210</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 Sweet Crumbs Artisan Bakery. All Rights Reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/919876543210" class="floating-whatsapp" target="_blank" rel="noopener noreferrer" title="WhatsApp Us">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  </a>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/payment.js"></script>
+  <script src="js/product.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Placed Successfully | Sweet Crumbs Bakery</title>
+  <meta name="description" content="Thank you for your celebration cake order! Your sweet treat is queued for baking." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    .order-success-container {
+      max-width: 820px;
+      margin: 40px auto 80px;
+    }
+
+    .success-card {
+      background-color: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .live-status-timeline {
+      display: flex;
+      justify-content: space-between;
+      margin: 36px 0;
+      position: relative;
+    }
+
+    .live-status-timeline::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background-color: var(--color-border);
+      z-index: 1;
+    }
+
+    .live-step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      flex: 1;
+    }
+
+    .live-step-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--color-white);
+      border: 3px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .live-step.completed .live-step-circle {
+      background-color: var(--color-success);
+      border-color: var(--color-success);
+      color: var(--color-white);
+    }
+
+    .live-step.active .live-step-circle {
+      background-color: var(--color-pink);
+      border-color: var(--color-pink);
+      color: var(--color-white);
+      box-shadow: 0 0 0 6px rgba(232, 93, 117, 0.25);
+    }
+
+    .live-step-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-chocolate);
+    }
+
+    .live-step-sub {
+      font-size: 0.74rem;
+      color: var(--color-text-muted);
+    }
+
+    @media print {
+      .announcement-bar, .site-header, .site-footer, .no-print, .floating-whatsapp {
+        display: none !important;
+      }
+      body {
+        background: #fff;
+      }
+      .success-card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="logo-symbol">🧁</div>
+        <div class="logo-text-group">
+          <span class="logo-title">Sweet Crumbs</span>
+          <span class="logo-tagline">Artisan Bakehouse</span>
+        </div>
+      </a>
+
+      <div style="display: flex; gap: 14px;">
+        <a href="shop.html" class="btn btn-outline btn-sm">Shop More</a>
+        <a href="account.html" class="btn btn-primary btn-sm">My Account</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container order-success-container">
+      
+      <!-- Top Success Alert Card -->
+      <div class="success-card" style="text-align: center;">
+        <div class="success-icon-wrap">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <span class="section-tag" style="background-color: #E8F5E9; color: #2E7D32;">Order Confirmed</span>
+        <h1 style="font-size: 2.3rem; margin: 10px 0 8px;">Thank You For Your Celebration Order!</h1>
+        <p style="color: var(--color-text-muted); font-size: 1.05rem; max-width: 580px; margin: 0 auto 16px;">
+          Your delicious artisanal treats are now in our bakehouse queue. We've sent your full receipt and tracking link via Email & SMS.
+        </p>
+        
+        <div style="display: inline-flex; align-items: center; gap: 10px; background: var(--color-cream); padding: 10px 24px; border-radius: var(--radius-pill); font-weight: 700; color: var(--color-chocolate);">
+          <span>Order ID:</span>
+          <span id="order-id-display" style="color: var(--color-pink); font-size: 1.15rem;">SC-000000</span>
+        </div>
+      </div>
+
+      <!-- Live Order Progress Tracker -->
+      <div class="success-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 style="font-size: 1.25rem;">Live Baking & Dispatch Status</h2>
+          <span style="font-size: 0.85rem; color: var(--color-text-muted);" id="order-placed-time">Placed: Just Now</span>
+        </div>
+
+        <div class="live-status-timeline">
+          <div class="live-step completed">
+            <div class="live-step-circle">✓</div>
+            <div class="live-step-title">Order Placed</div>
+            <div class="live-step-sub">Confirmed</div>
+          </div>
+          <div class="live-step completed">
+            <div class="live-step-circle">✓</div>
+            <div class="live-step-title">Bakery Assigned</div>
+            <div class="live-step-sub">Ingredients Prepped</div>
+          </div>
+          <div class="live-step active">
+            <div class="live-step-circle">3</div>
+            <div class="live-step-title">Baking & Icing</div>
+            <div class="live-step-sub">In Pastry Kitchen</div>
+          </div>
+          <div class="live-step">
+            <div class="live-step-circle">4</div>
+            <div class="live-step-title">Out for Delivery</div>
+            <div class="live-step-sub">Chilled Van</div>
+          </div>
+          <div class="live-step">
+            <div class="live-step-circle">5</div>
+            <div class="live-step-title">Delivered</div>
+            <div class="live-step-sub">Enjoy Celebration!</div>
+          </div>
+        </div>
+
+        <!-- WhatsApp updates banner -->
+        <div style="background-color: #E8F8EE; border: 1px solid #C4EED0; border-radius: var(--radius-sm); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: #1B5E20;">
+            <span style="font-size: 1.4rem;">💬</span>
+            <span>Receive live delivery ETA & driver photos directly on WhatsApp.</span>
+          </div>
+          <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background-color: #25D366; color: #FFF;">
+            Enable Updates
+          </a>
+        </div>
+      </div>
+
+      <!-- Order Details Breakdown Card -->
+      <div class="success-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--color-border); padding-bottom: 14px;">
+          <h2 style="font-size: 1.3rem;">Order Summary & Items</h2>
+          <button type="button" class="btn btn-outline btn-sm no-print" onclick="window.print()">
+            🖨️ Print Invoice
+          </button>
+        </div>
+
+        <!-- Items Table / List -->
+        <div id="order-items-list" style="margin-bottom: 24px;">
+          <!-- Dynamically populated -->
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; border-top: 1px solid var(--color-border); padding-top: 20px;">
+          
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 8px; color: var(--color-chocolate);">Delivery Information</h4>
+            <div id="order-delivery-address-text" style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
+              Fetching delivery details...
+            </div>
+          </div>
+
+          <div>
+            <h4 style="font-size: 1rem; margin-bottom: 8px; color: var(--color-chocolate);">Payment & Totals</h4>
+            <div id="order-payment-totals-text" style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
+              Fetching payment details...
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-top: 30px;" class="no-print">
+        <a href="shop.html" class="btn btn-primary btn-lg">Browse More Sweet Treats</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer no-print">
+    <div class="container footer-bottom" style="border-top: none; padding-top: 0;">
+      <div>© 2026 Sweet Crumbs Artisan Bakery. All Rights Reserved.</div>
+      <div>Need assistance? Call: +91 98765 43210</div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/payment.js"></script>
+  <script src="js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get('orderId');
+
+      let order = null;
+
+      // Try reading from last order in localStorage
+      const lastOrderStr = localStorage.getItem('sweet_crumbs_last_order');
+      if (lastOrderStr) {
+        try {
+          const parsed = JSON.parse(lastOrderStr);
+          if (!orderId || parsed.id === orderId) {
+            order = parsed;
+          }
+        } catch (e) {}
+      }
+
+      // If not last order, look in orders array
+      if (!order && orderId) {
+        const ordersList = JSON.parse(localStorage.getItem('sweet_crumbs_orders') || '[]');
+        order = ordersList.find(o => o.id === orderId);
+      }
+
+      // If still no order, generate a fallback realistic demo order
+      if (!order) {
+        order = {
+          id: orderId || 'SC-749210',
+          date: new Date().toISOString(),
+          customer: { name: 'Valued Customer', phone: '+91 9876543210', email: 'customer@example.com' },
+          shippingAddress: { flat: 'Apartment 402', society: 'Rosewood Towers', street: 'Civil Lines', city: 'Sonipat', pincode: '131001' },
+          deliverySlot: { date: 'Tomorrow', time: '12:00 PM – 03:00 PM' },
+          items: [
+            { name: 'Belgian Chocolate Truffle Cake', weight: '1kg', quantity: 1, unitPrice: 650, eggless: true, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80', cakeMessage: 'Happy Birthday!' }
+          ],
+          paymentMethod: 'UPI',
+          totals: { subtotal: 650, delivery: 0, tax: 33, discount: 0, grandTotal: 683 }
+        };
+      }
+
+      // Populate elements
+      document.getElementById('order-id-display').textContent = order.id;
+      
+      const itemsList = document.getElementById('order-items-list');
+      if (itemsList && order.items) {
+        itemsList.innerHTML = order.items.map(it => `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #F6EEE7;">
+            <div style="display: flex; gap: 14px; align-items: center;">
+              <img src="${it.image}" alt="${it.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px;" />
+              <div>
+                <div style="font-weight: 700; color: var(--color-chocolate);">${it.name}</div>
+                <div style="font-size: 0.82rem; color: var(--color-text-muted);">
+                  Size: ${it.weight} • Qty: ${it.quantity} ${it.cakeMessage ? `• Plaque: "${it.cakeMessage}"` : ''}
+                </div>
+              </div>
+            </div>
+            <div style="font-weight: 700; color: var(--color-chocolate);">₹${(it.unitPrice || 0) * (it.quantity || 1)}</div>
+          </div>
+        `).join('');
+      }
+
+      const addrElem = document.getElementById('order-delivery-address-text');
+      if (addrElem && order.shippingAddress) {
+        addrElem.innerHTML = `
+          <strong>${order.customer?.name || 'Customer'}</strong><br>
+          ${order.shippingAddress.flat || ''}, ${order.shippingAddress.society || ''}<br>
+          ${order.shippingAddress.street || ''}, ${order.shippingAddress.city} – ${order.shippingAddress.pincode}<br>
+          Phone: ${order.customer?.phone || ''}<br>
+          <strong>Slot:</strong> ${order.deliverySlot?.date || 'Today'} (${order.deliverySlot?.time || 'Express'})
+        `;
+      }
+
+      const payElem = document.getElementById('order-payment-totals-text');
+      if (payElem && order.totals) {
+        payElem.innerHTML = `
+          <strong>Payment Mode:</strong> ${order.paymentMethod?.toUpperCase() || 'ONLINE'}<br>
+          Subtotal: ₹${order.totals.subtotal}<br>
+          Delivery Fee: ${order.totals.delivery === 0 ? 'Free' : `₹${order.totals.delivery}`}<br>
+          Taxes (GST 5%): ₹${order.totals.tax}<br>
+          ${order.totals.discount > 0 ? `Discount: -₹${order.totals.discount}<br>` : ''}
+          <strong style="color: var(--color-chocolate); font-size: 1rem;">Total Paid: ₹${order.totals.grandTotal}</strong>
+        `;
+      }
+    });
+  </script>
+
+</body>
+</html>
